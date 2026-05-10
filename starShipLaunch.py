@@ -11,28 +11,28 @@ conn = krpc.connect(
 space_center = conn.space_center
 vessel = space_center.active_vessel
 
-target_altitude = 75000
-turn_start_altitude = 0
-gimbal_changing_altitude = 10000
-turn_end_altitude = 30000
-turning_theta = 10
-alpha = np.log(91 - turning_theta) / (turn_end_altitude - turn_start_altitude)
+target_altitude = 75000 # 目标高度
+turn_start_altitude = 0 # 转弯开始高度
+gimbal_changing_altitude = 10000 # 变更gimbal的高度
+turn_end_altitude = 30000 # 转弯结束高度
+turning_theta = 10  # 转弯角度
+alpha = np.log(91 - turning_theta) / (turn_end_altitude - turn_start_altitude) # 转弯角度的系数
 
-time_to_apoapsis = conn.add_stream(getattr, vessel.orbit, 'time_to_apoapsis')
-altitude = conn.add_stream(getattr, vessel.flight(), 'mean_altitude')
-apoapsis = conn.add_stream(getattr, vessel.orbit, 'apoapsis_altitude')
-max_thrust = conn.add_stream(getattr, vessel, 'available_thrust')
-mass = conn.add_stream(getattr, vessel, 'mass')
+time_to_apoapsis = conn.add_stream(getattr, vessel.orbit, 'time_to_apoapsis')   # 获取到近点的时间
+altitude = conn.add_stream(getattr, vessel.flight(), 'mean_altitude')   # 获取高度
+apoapsis = conn.add_stream(getattr, vessel.orbit, 'apoapsis_altitude')   # 获取近点高度
+max_thrust = conn.add_stream(getattr, vessel, 'available_thrust')   # 获取最大推力
+mass = conn.add_stream(getattr, vessel, 'mass')   # 获取质量    
 
-vessel.control.sas = False
-vessel.control.rcs = False
-vessel.control.throttle = 1.0
+vessel.control.sas = False  # 关闭SAS
+#vessel.control.rcs = False  # 关闭RCS
+vessel.control.throttle = 1.0   # 设置推力为最大
 
 # find the wings and disable them during the low altitude
-root = vessel.parts.root
-stack = [(root, 0)]
-wing_parts = []
-KS25Engine_parts = []
+root = vessel.parts.root     # 获取根节点
+stack = [(root, 0)]  # 初始化栈，根节点深度为0
+wing_parts = []  # 存储所有翼的列表
+KS25Engine_parts = []   # 存储所有KS-25引擎的列表
 while stack:
     part, depth = stack.pop()
     if part.title == "大S型升降副翼1" or part.title == "升降副翼3":
