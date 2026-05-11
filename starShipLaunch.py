@@ -13,7 +13,7 @@ vessel = space_center.active_vessel
 
 target_altitude = 75000 # 目标高度
 turn_start_altitude = 0 # 转弯开始高度
-gimbal_changing_altitude = 10000 # 变更gimbal的高度#我是傻逼#他说的对
+gimbal_changing_altitude = 10000 # 变更gimbal的高度#我是傻逼#他说的对，他是傻逼
 turn_end_altitude = 30000 # 转弯结束高度
 turning_theta = 10  # 转弯角度
 alpha = np.log(91 - turning_theta) / (turn_end_altitude - turn_start_altitude) # 转弯角度的系数
